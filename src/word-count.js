@@ -1,5 +1,4 @@
 const $ = require('jquery');
-const host = require('./config.js').hostUrl;
 const apiHelper = require('./helpers/apiHelper');
 const htmlHelper = require('./helpers/htmlHelper');
 
