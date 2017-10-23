@@ -1,19 +1,13 @@
 const $ = require('jquery');
-const host = require('./config.js').host;
-
+const host = require('./config.js').hostUrl;
+const apiHelper = require('./helpers/apiHelper');
+const htmlHelper = require('./helpers/htmlHelper');
 
 class wordCount {
-
-
   static getTopWord(){
-    wordCount.getTopUsedWordApi()
+    apiHelper.getTopUsedWordApi()
       .then(wordCount.appendTopWord)
   }
-
-  static getTopUsedWordApi() {
-    return $.getJSON(`${host}/top_word`)
-  }
-
 
   static appendTopWord(data) {
     const topWord = Object.keys(data['word'])[0];
@@ -22,16 +16,8 @@ class wordCount {
     $('.top-heading').append(`${topWord} (${times})`)
   }
 
-  static cleanFormatText() {
-    const text = $('.text-field').val();
-    const words = text.replace(/('re)/g, " are").replace(/(\r\n|\n|\r)/gm," ").replace(/('m)/g, " am").replace(/('t)/g, " not").replace(/('ll)/g, " will").replace(/('em)/g, " them").replace(/[&\/\\#,+()$~%.'":*-?<>{}]/g, '').split(" ")
-    return words.map((word) =>  {
-      return word.toLowerCase()
-    });
-  }
-
   static buildFrequency() {
-    const downcaseWords = wordCount.cleanFormatText();
+    const downcaseWords = htmlHelper.cleanText();
 
     return downcaseWords.reduce((counterObject, word) => {
       if(!counterObject[word]) {
@@ -51,36 +37,21 @@ class wordCount {
     for (let i = 0; i < resultKeys.length; i++) {
       const word = resultKeys[i];
       const frequency = result[resultKeys[i]];
-      wordCount.appendStyles(word, frequency);
+      htmlHelper.appendStyles(word, frequency);
       wordCount.postWords(word, frequency)
     }
   }
 
-  static appendStyles(word, frequency) {
-    $('article.word-count').append(`<span class='${word}-count'>${word}</span>`);
-    $(`.${word}-count`).css('font-size', `${frequency}em`).css('margin', '3px')
-  }
-
   static postToApi(word) {
     let data = { word: { value: word } };
-    $.post(`${host}/words`, data)
+    apiHelper.postApi(data)
   }
-
 
   static postWords(word, frequency) {
     for (let j = 0; j < frequency; j++) {
       wordCount.postToApi(word)
     }
   }
-
-
-
-
-
-
-  // getText from text area
-  // build the frecuency of the words
-  // append to html
 }
 
 module.exports = wordCount;

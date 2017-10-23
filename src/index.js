@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // on keyup enter
   wordCount.getTopWord();
   $('.break-down').on('click', wordCount.getText);
-  $('.text-field').on('keyup', function(e) {
+  $('.text-field').on('keyup', (e) => {
     if (e.keyCode === 13) {
       wordCount.getText()
     }
