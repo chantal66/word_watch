@@ -26,6 +26,7 @@ class wordCount {
       return counterObject
     }, {})
   }
+
   static getText() {
     const result = wordCount.buildFrequency();
     wordCount.appendPostWords(result)

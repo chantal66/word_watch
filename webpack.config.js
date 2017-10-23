@@ -4,7 +4,7 @@ module.exports = {
   entry: ['./src/index.js', './src/stylesheets/styles.scss'],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'docs')
   },
   module: {
     loaders: [{
@@ -24,6 +24,6 @@ module.exports = {
     }]
   },
   devServer: {
-    contentBase: "./dist"
+    contentBase: "./docs"
   }
 };
